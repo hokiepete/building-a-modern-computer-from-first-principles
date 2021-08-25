@@ -1,0 +1,80 @@
+function Node.new 0
+push constant 5
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 2
+push argument 1
+pop this 3
+push constant 1
+pop this 4
+push pointer 0
+return
+function Node.dispose 0
+push argument 0
+pop pointer 0
+push pointer 0
+call memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function Node.getSuccessor 0
+push argument 0
+pop pointer 0
+push this 1
+return
+function Node.getPredecessor 0
+push argument 0
+pop pointer 0
+push this 0
+return
+function Node.setSuccessor 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 1
+push constant 0
+return
+function Node.setPredecessor 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 0
+push constant 0
+return
+function Node.getX 0
+push argument 0
+pop pointer 0
+push this 2
+return
+function Node.setX 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 2
+push constant 0
+return
+function Node.setY 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 3
+push constant 0
+return
+function Node.getY 0
+push argument 0
+pop pointer 0
+push this 3
+return
+function Node.setLastMove 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 4
+push constant 0
+return
+function Node.getLastMove 0
+push argument 0
+pop pointer 0
+push this 4
+return

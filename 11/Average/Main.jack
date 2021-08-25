@@ -27,3 +27,15 @@ class Main {
      return;
    }
 }
+// class Main {
+//    function void main() {
+//      var Array a; 
+//      var int b;
+//    //   var int b, c;
+//    //   let a = Array.new(3); // constructs the array
+//    //   let b = 4;
+//    //   let c = 1;
+//      let b = a[2];     
+//      return;
+//    }
+// }

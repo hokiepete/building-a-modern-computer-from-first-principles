@@ -1,0 +1,408 @@
+function Snake.new 0
+push constant 2
+call Memory.alloc 1
+pop pointer 0
+push constant 0
+push constant 0
+call Queue.new 2
+pop this 0
+push argument 0
+pop this 1
+push pointer 0
+return
+function Snake.grow 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Snake.erase 1
+pop temp 0
+push this 0
+push argument 1
+push argument 2
+call Queue.pushNode 3
+pop temp 0
+push pointer 0
+call Snake.draw 1
+pop temp 0
+push constant 0
+return
+function Snake.getQueue 0
+push argument 0
+pop pointer 0
+push this 0
+return
+function Snake.getHead 0
+push argument 0
+pop pointer 0
+push this 0
+call Queue.getHead 1
+return
+function Snake.getSize 0
+push argument 0
+pop pointer 0
+push this 1
+return
+function Snake.dispose 0
+push argument 0
+pop pointer 0
+push this 0
+call Queue.dispose 1
+pop temp 0
+call tnode.dispose 0
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function Snake.drawSnake 4
+push argument 0
+pop pointer 0
+push this 0
+call Queue.getLen 1
+pop local 1
+push this 0
+call Queue.getHead 1
+pop local 0
+label WHILE_EXP0
+push local 1
+push constant 0
+gt
+not
+if-goto WHILE_END0
+push local 0
+call Node.getX 1
+pop local 2
+push local 0
+call Node.getY 1
+pop local 3
+push local 2
+push local 3
+push local 2
+push this 1
+add
+push local 3
+push this 1
+add
+call Screen.drawRectangle 4
+pop temp 0
+push local 0
+call Node.getSuccessor 1
+pop local 0
+push local 1
+push constant 1
+sub
+pop local 1
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Snake.erase 0
+push argument 0
+pop pointer 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push pointer 0
+call Snake.drawSnake 1
+pop temp 0
+push constant 0
+return
+function Snake.draw 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push pointer 0
+call Snake.drawSnake 1
+pop temp 0
+push constant 0
+return
+function Snake.moveRight 1
+push argument 0
+pop pointer 0
+push argument 1
+call Node.getX 1
+pop local 0
+push local 0
+push constant 2
+push this 1
+call Math.multiply 2
+add
+push argument 2
+lt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 1
+push local 0
+push this 1
+add
+call Node.setX 2
+pop temp 0
+goto IF_END0
+label IF_FALSE0
+push argument 1
+push argument 2
+push this 1
+sub
+call Node.setX 2
+pop temp 0
+label IF_END0
+push constant 0
+return
+function Snake.moveLeft 1
+push argument 0
+pop pointer 0
+push argument 1
+call Node.getX 1
+pop local 0
+push local 0
+push this 1
+sub
+push argument 2
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 1
+push local 0
+push this 1
+sub
+call Node.setX 2
+pop temp 0
+goto IF_END0
+label IF_FALSE0
+push argument 1
+push argument 2
+call Node.setX 2
+pop temp 0
+label IF_END0
+push constant 0
+return
+function Snake.moveUp 1
+push argument 0
+pop pointer 0
+push argument 1
+call Node.getY 1
+pop local 0
+push local 0
+push this 1
+sub
+push argument 2
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 1
+push local 0
+push this 1
+sub
+call Node.setY 2
+pop temp 0
+goto IF_END0
+label IF_FALSE0
+push argument 1
+push argument 2
+call Node.setY 2
+pop temp 0
+label IF_END0
+push constant 0
+return
+function Snake.moveDown 1
+push argument 0
+pop pointer 0
+push argument 1
+call Node.getY 1
+pop local 0
+push local 0
+push constant 2
+push this 1
+call Math.multiply 2
+add
+push argument 2
+lt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 1
+push local 0
+push this 1
+add
+call Node.setY 2
+pop temp 0
+goto IF_END0
+label IF_FALSE0
+push argument 1
+push argument 2
+push this 1
+sub
+call Node.setY 2
+pop temp 0
+label IF_END0
+push constant 0
+return
+function Snake.move 7
+push argument 0
+pop pointer 0
+push pointer 0
+call Snake.erase 1
+pop temp 0
+push this 0
+call Queue.getHead 1
+pop local 0
+push this 0
+call Queue.getLen 1
+pop local 1
+push constant 1
+pop local 3
+push constant 510
+pop local 5
+push constant 1
+pop local 4
+push constant 250
+pop local 6
+label WHILE_EXP0
+push local 1
+push constant 0
+gt
+not
+if-goto WHILE_END0
+push argument 1
+push constant 1
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+push local 0
+push local 5
+call Snake.moveRight 3
+pop temp 0
+push local 0
+call Node.getX 1
+pop local 5
+label IF_FALSE0
+push argument 1
+push constant 2
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push pointer 0
+push local 0
+push local 4
+call Snake.moveUp 3
+pop temp 0
+push local 0
+call Node.getY 1
+push this 1
+add
+pop local 4
+label IF_FALSE1
+push argument 1
+push constant 3
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push pointer 0
+push local 0
+push local 3
+call Snake.moveLeft 3
+pop temp 0
+push local 0
+call Node.getX 1
+push this 1
+add
+pop local 3
+label IF_FALSE2
+push argument 1
+push constant 4
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push pointer 0
+push local 0
+push local 6
+call Snake.moveDown 3
+pop temp 0
+push local 0
+call Node.getY 1
+pop local 6
+label IF_FALSE3
+push local 0
+call Node.getLastMove 1
+pop local 2
+push local 0
+push argument 1
+call Node.setLastMove 2
+pop temp 0
+push local 2
+pop argument 1
+push local 0
+call Node.getSuccessor 1
+pop local 0
+push local 1
+push constant 1
+sub
+pop local 1
+goto WHILE_EXP0
+label WHILE_END0
+push pointer 0
+call Snake.draw 1
+pop temp 0
+push constant 0
+return
+function Snake.checkCollision 3
+push argument 0
+pop pointer 0
+push this 0
+call Queue.getHead 1
+pop local 1
+push this 0
+call Queue.getLen 1
+push constant 1
+sub
+pop local 2
+push local 1
+call Node.getSuccessor 1
+pop local 0
+label WHILE_EXP0
+push local 2
+push constant 0
+gt
+not
+if-goto WHILE_END0
+push local 0
+call Node.getX 1
+push local 1
+call Node.getX 1
+eq
+push local 0
+call Node.getY 1
+push local 1
+call Node.getY 1
+eq
+and
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+not
+return
+label IF_FALSE0
+push local 0
+call Node.getSuccessor 1
+pop local 0
+push local 2
+push constant 1
+sub
+pop local 2
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return

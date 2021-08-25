@@ -1,0 +1,58 @@
+class Queue {
+    field Node head, tail;
+    field int len;
+
+    constructor Queue new(int Ax, int Ay){
+        var Node node;
+        let node = Node.new(Ax, Ay);
+        let head = node;
+        let tail = node;
+        let len = 1;
+        return this;
+    }
+
+    method void pushNode(int Ax, int Ay){
+        var Node old_head, new_head;
+        let old_head = head;
+        let new_head = Node.new(Ax, Ay);
+        do old_head.setPredecessor(new_head);
+        do new_head.setSuccessor(old_head);
+        let head = new_head;
+        let len = len + 1;
+        return;
+    }
+
+    method void popNode(){
+        var node old_tail;
+        if (len > 1){
+            let old_tail = tail;
+            let tail = old_tail.getPredecessor();
+            do old_tail.dispose();
+        }
+        return;
+    }
+
+    method Node getHead(){
+        return head;
+    }
+
+    method Node getTail(){
+        return tail;
+    }
+
+    method int getLen(){
+        return len;
+    }
+
+    method void dispose(){
+        var Node old_head;
+        while (len > 0) {
+            let old_head = head;
+            let head = old_head.getSuccessor();
+            do old_head.dispose();
+            let len = len - 1;
+        }
+        do memory.deAlloc(this);
+        return;
+    }
+}

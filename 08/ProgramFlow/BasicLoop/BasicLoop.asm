@@ -128,6 +128,6 @@ A=M
 M=D
 @SP
 M=M+1
-(END)
-@END
+(_END_ALL_CODE_)
+@_END_ALL_CODE_
 0;JMP

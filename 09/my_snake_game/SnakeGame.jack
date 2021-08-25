@@ -1,0 +1,122 @@
+class SnakeGame {
+    field Snake snake;
+    field String game_over;
+    field Node food;
+    field int food_num, snake_size;
+
+    constructor SnakeGame new(int Asnake_size){
+        let snake_size = Asnake_size;
+        let snake = Snake.new(snake_size);
+        do snake.draw();
+        let game_over = "Game Over";
+        let food = Node.new(0,0);
+        let food_num = 1;
+        do updateFood();
+        return this;
+    }
+
+    method void dispose(){
+        do snake.erase();
+        do snake.dispose();
+        do food.dispose();
+        do memory.deAlloc(this);
+        return;
+    }
+
+    method void updateFood(){
+        var int new_x, new_y, new_num;
+        do Screen.setColor(false);
+        do Screen.drawRectangle(
+            food.getX(), food.getY(), food.getX() + snake_size, food.getY() + snake_size
+        );
+        if (food_num=1){
+            let new_x = 20;
+            let new_y = 20;
+            let new_num = 2;
+        } else{ if (food_num=2){
+            let new_x = 480;
+            let new_y = 40;
+            let new_num = 3;
+        } else{ if (food_num=3){
+            let new_x = 300;
+            let new_y = 80;
+            let new_num = 4;
+        } else{ if (food_num=4){
+            let new_x = 50;
+            let new_y = 230;
+            let new_num = 5;
+        } else{ if (food_num=5){
+            let new_x = 250;
+            let new_y = 120;
+            let new_num = 6;
+        } else {if (food_num=6){
+            let new_x = 460;
+            let new_y = 220;
+            let new_num = 7;
+        } else{ if (food_num=7){
+            let new_x = 250;
+            let new_y = 60;
+            let new_num = 1;
+        }}}}}}}
+        do food.setX(new_x);
+        do food.setY(new_y);
+        let food_num = new_num;
+        do Screen.setColor(true);
+        do Screen.drawRectangle(
+            food.getX(), food.getY(), food.getX() + snake_size, food.getY() + snake_size
+        );
+        return;
+    }
+
+    method void play(){
+        var int direction, last_direction;
+        var bool play;
+        var char key;
+        var Node head;
+        let direction = 1;
+        let play = true;
+        let head = snake.getHead();
+        while (play){
+            if (
+                  (head.getX() = food.getX())
+                & (head.getY() = food.getY())
+                ){
+                do snake.grow(food.getX(), food.getY());
+                let head = snake.getHead();
+                do head.setLastMove(last_direction);
+                do updateFood();
+            }
+            // else { 
+            //do Output.printInt(food.getX());
+            //do Output.printInt(food.getY());
+            let key = Keyboard.keyPressed();
+            
+            if (key = 81)  { let play = false; }     // q key
+            if (key = 131) { let direction = 2; }   // up arrow
+            if (key = 133) { let direction = 4; }   // down arrow
+            if (key = 130) { let direction = 3; }   // left arrow
+            if (key = 132) { let direction = 1; }   // right arrow
+
+            // waits for the key to be released
+            // while (~(key = 0)) {
+            if (
+                ((direction=1) & ~(last_direction=3))
+                | ((direction=3) & ~(last_direction=1))
+                | ((direction=2) & ~(last_direction=4))
+                | ((direction=4) & ~(last_direction=2))
+                ){
+                do snake.move(direction);
+                let last_direction = direction;
+            } else {
+                do snake.move(last_direction);
+            }
+            if (snake.checkCollision()){
+                let play = false;
+                do Output.printString(game_over);
+            }
+            
+            do Sys.wait(200);
+        }
+        return;
+    }
+}

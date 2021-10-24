@@ -1,0 +1,172 @@
+// 510
+// 254
+
+// Directions
+// 1 East
+// 2 North
+// 3 West
+// 4 South
+class Snake {
+    field Queue queue;
+    field int size;
+
+    constructor Snake new(int Asize){
+        let queue = Queue.new(0, 0);
+        let size = Asize;
+        return this;
+    }
+
+    method void grow(int Ax, int Ay){
+        do erase();
+        do queue.pushNode(Ax, Ay);
+        do draw();
+        return;
+    }
+
+    method Queue getQueue(){
+        return queue;
+    }
+
+    method Node getHead(){
+        return queue.getHead();
+    }
+
+    method int getSize(){
+        return size;
+    }
+
+    method void dispose(){
+        do queue.dispose();
+        do tnode.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void drawSnake(){
+        var Node tnode;
+        var int n, tx, ty;
+        let n = queue.getLen();
+        let tnode = queue.getHead();
+        while (n > 0){
+            let tx = tnode.getX();
+            let ty = tnode.getY();
+            do Screen.drawRectangle(tx, ty, tx + size, ty + size);
+            let tnode = tnode.getSuccessor();
+            let n = n - 1;
+        }
+        return;
+    }
+
+    method void erase(){
+        do Screen.setColor(false);
+        do drawSnake();
+        return;
+    }    
+    method void draw() {
+      do Screen.setColor(true);
+      do drawSnake();
+      return;
+   }
+
+    method void moveRight(Node Anode, int max_x){
+        var int tx;
+        let tx = Anode.getX();
+        if ((tx + (2*size)) < max_x){
+             do Anode.setX(tx + size);
+        } else {
+            do Anode.setX(max_x - size);
+        }
+        return;
+    }
+
+    method void moveLeft(Node Anode, int min_x){
+        var int tx;
+        let tx = Anode.getX();
+        if ((tx - size) > min_x){
+             do Anode.setX(tx - size);
+        } else {
+            do Anode.setX(min_x);
+        }
+        return;
+    }
+
+    method void moveUp(Node Anode, int min_y){
+        var int ty;
+        let ty = Anode.getY();
+        if ((ty - size) > min_y){
+             do Anode.setY(ty - size);
+        } else {
+            do Anode.setY(min_y);
+        }
+        return;
+    }
+
+    method void moveDown(Node Anode, int max_y){
+        var int ty;
+        let ty = Anode.getY();
+        if ((ty + (2*size)) < max_y){
+             do Anode.setY(ty + size);
+        } else {
+            do Anode.setY(max_y - size);
+        }
+        return;
+    }
+
+    method void move(int Adirection){
+        var Node tnode;
+        var int n, tdirection, min_x, min_y, max_x, max_y;
+        do erase();
+        let tnode = queue.getHead();
+        let n = queue.getLen();
+        let min_x = 1;
+        let max_x = 510;
+        let min_y = 1;
+        let max_y = 250;
+        while (n > 0){
+            if (Adirection = 1){
+                do moveRight(tnode, max_x);
+                let max_x = tnode.getX();
+            }
+            if (Adirection = 2){
+                do moveUp(tnode, min_y);
+                let min_y = tnode.getY() + size;
+            }
+            if (Adirection = 3){
+                do moveLeft(tnode, min_x);
+                let min_x = tnode.getX() + size;
+            }
+            if (Adirection = 4){
+                do moveDown(tnode, max_y);
+                let max_y = tnode.getY();
+            }
+            let tdirection = tnode.getLastMove();
+            do tnode.setLastMove(Adirection);
+            let Adirection = tdirection;
+            let tnode = tnode.getSuccessor();
+            let n = n - 1;
+        }
+
+        do draw();
+        return; 
+    }
+   
+   method bool checkCollision(){
+        var Node tnode, head;
+        var int n;
+        let head = queue.getHead();
+        let n = queue.getLen() - 1;
+        let tnode =  head.getSuccessor();
+        while (n > 0){
+            if (
+                  (tnode.getX() = head.getX())
+                & (tnode.getY() = head.getY())
+            ){
+                return true;
+            }
+            let tnode = tnode.getSuccessor();
+            let n = n - 1;
+
+        }
+        return false;
+   }
+}

@@ -1,0 +1,61 @@
+class Node {
+    field Node pred, succ;
+    field int x, y, last_move;
+
+    constructor Node new(int Ax, int Ay){
+        let x=Ax;
+        let y=Ay;
+        let last_move=1;
+        return this;
+    }
+
+    method void dispose(){
+        do memory.deAlloc(this);
+        return;
+    }
+
+    method Node getSuccessor(){
+        return succ;
+    }
+    
+    method Node getPredecessor(){
+        return pred;
+    }
+    
+    method void setSuccessor(node Asucc){
+        let succ=Asucc;
+        return;
+    }
+    
+    method void setPredecessor(node Apred){
+        let pred=Apred;
+        return;
+    }
+
+    method int getX(){
+        return x;
+    }
+
+    method void setX(int Ax){
+        let x = Ax;
+        return;
+    }
+
+    method void setY(int Ay){
+        let y = Ay;
+        return;
+    }
+
+    method int getY(){
+        return y;
+    }
+
+    method void setLastMove(int Adirection){
+        let last_move = Adirection;
+        return;
+    }
+
+    method int getLastMove(){
+        return last_move;
+    }
+}
